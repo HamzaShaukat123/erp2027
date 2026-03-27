@@ -527,6 +527,8 @@ class PoController extends Controller
 
         // Close and output PDF
         $pdf->Output('Purchase Order_'.$purchase['prefix'].$purchase['pur_id'].'.pdf', 'I');
+
+        exit;
     }
 
 }

@@ -141,6 +141,7 @@ class RptAccNameCombPurController extends Controller
             // Filename and Output
         $filename = "combine_pur_report_{$both_pur_rpt_by_account[0]['ac_name']}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'I');
+        exit;
     }
 
     public function combinePurchaseDownload(Request $request)
@@ -246,6 +247,7 @@ class RptAccNameCombPurController extends Controller
             // Filename and Output
         $filename = "combine_pur_report_{$both_pur_rpt_by_account[0]['ac_name']}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'D');
+        exit;
     }
 
 }

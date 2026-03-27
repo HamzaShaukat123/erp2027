@@ -711,6 +711,7 @@ class Sales2Controller extends Controller
         
         // Close and output PDF
         $pdf->Output($purchase['ac_name'].'_'.$purchase['prefix'].$purchase['Sal_inv_no'].'.pdf', 'I');
+        exit;
     }
     
 
@@ -916,7 +917,8 @@ class Sales2Controller extends Controller
         $pdf->SetFont('helvetica','', 10);
         
         // Close and output PDF
-        $pdf->Output($purchase['ac_name'].'_'.$purchase['prefix'].$purchase['Sal_inv_no'].'.pdf', 'I');
+        
+         $pdf->Output($purchase['ac_name'].'_'.$purchase['prefix'].$purchase['Sal_inv_no'].'.pdf', 'I');
         exit;
 
     }
@@ -1122,6 +1124,7 @@ class Sales2Controller extends Controller
         
         // Close and output PDF
         $pdf->Output($purchase['ac_name'].'_'.$purchase['prefix'].$purchase['Sal_inv_no'].'.pdf', 'I');
+        exit;
     }
 
     public function generatePDF(Request $request)

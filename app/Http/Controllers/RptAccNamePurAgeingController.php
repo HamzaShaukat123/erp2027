@@ -219,6 +219,7 @@ class RptAccNamePurAgeingController extends Controller
             // Filename and Output
         $filename = "Pur_Ageing_report_{$pur_days[0]['ac_nam']}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'I');
+        exit;
     }
 
     public function purAgeingDownload(Request $request)
@@ -360,6 +361,7 @@ class RptAccNamePurAgeingController extends Controller
             // Filename and Output
         $filename = "Pur_Ageing_report_{$pur_days[0]['ac_nam']}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'D');
+        exit;
     }
 
 }

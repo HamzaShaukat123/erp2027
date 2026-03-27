@@ -497,6 +497,7 @@ class WeightController extends Controller
                 
                 // Close and output PDF
                 $pdf->Output('Weight_'.$purchase['prefix'].$purchase['Sale_inv_no'].'.pdf', 'I');
+                exit;
             }
 
   

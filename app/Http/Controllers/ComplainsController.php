@@ -345,6 +345,7 @@ class ComplainsController extends Controller
 
 
         $pdf->Output('Complain'.$complains['id'].'.pdf', 'I');
+        exit;
     }
 
 }

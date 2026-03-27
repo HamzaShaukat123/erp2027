@@ -289,17 +289,18 @@ class TBadDabsController extends Controller
     $pdf->Cell(40, 5, 'Total Less', 1,1);
 
 
-// Column 1 
-$pdf->SetTextColor(0, 0, 0);
-$pdf->SetXY(50, $currentY);
-$pdf->SetFont('helvetica', 'B', 10); // Set font to bold
-$pdf->Cell(42, 5, $total_add, 1, 'R');
+    // Column 1 
+    $pdf->SetTextColor(0, 0, 0);
+    $pdf->SetXY(50, $currentY);
+    $pdf->SetFont('helvetica', 'B', 10); // Set font to bold
+    $pdf->Cell(42, 5, $total_add, 1, 'R');
 
-$pdf->SetXY(50, $currentY + 6.8);
-$pdf->Cell(42, 5, $total_less, 1, 'R'); // Use the same font style
+    $pdf->SetXY(50, $currentY + 6.8);
+    $pdf->Cell(42, 5, $total_less, 1, 'R'); // Use the same font style
 
-       // Close and output PDF
-    $pdf->Output('TBad Dabs_'. $tbad_dabs['bad_dabs_id'] . '.pdf', 'I');
-}
+        // Close and output PDF
+        $pdf->Output('TBad Dabs_'. $tbad_dabs['bad_dabs_id'] . '.pdf', 'I');
+        exit;
+    }
 
 }

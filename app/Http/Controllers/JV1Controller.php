@@ -500,6 +500,7 @@ class JV1Controller extends Controller
         $pdf->Cell(50, 0, "Customer's Signature", $style, 1, 'C');
 
         $pdf->Output('jv1_'.$jv1['auto_lager'].'.pdf', 'I');
+        exit;
 
     }
 

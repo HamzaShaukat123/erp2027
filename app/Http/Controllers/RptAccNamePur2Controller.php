@@ -145,6 +145,7 @@ class RptAccNamePur2Controller extends Controller
             // Filename and Output
         $filename = "pur2_report_{$pipe_pur_by_account[0]['ac_name']}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'I');
+        exit;
     }
 
     public function purchase2Download(Request $request)
@@ -254,6 +255,7 @@ class RptAccNamePur2Controller extends Controller
             // Filename and Output
         $filename = "pur2_report_{$pipe_pur_by_account[0]['ac_name']}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'D');
+        exit;
     }
 
 }

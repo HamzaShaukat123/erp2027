@@ -159,8 +159,10 @@ class RptDailyRegPur1Controller extends Controller
         // Determine output type
         if ($request->outputType === 'download') {
             $pdf->Output($filename, 'D'); // For download
+            exit;
         } else {
             $pdf->Output($filename, 'I'); // For inline view
+            exit;
         }
     }
 }

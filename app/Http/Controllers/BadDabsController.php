@@ -286,8 +286,9 @@ class BadDabsController extends Controller
     $pdf->SetXY(50, $currentY + 6.8);
     $pdf->Cell(42, 5, $total_less, 1, 'R'); // Use the same font style
     
-           // Close and output PDF
+        // Close and output PDF
         $pdf->Output('Bad Dabs_'. $bad_dabs['bad_dabs_id'] . '.pdf', 'I');
+        exit;
     }
 
 }

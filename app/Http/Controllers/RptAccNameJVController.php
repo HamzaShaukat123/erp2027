@@ -146,6 +146,7 @@ class RptAccNameJVController extends Controller
             // Filename and Output
         $filename = "jv_all_report_{$all_payments_by_party[0]['ac_name']}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'I');
+        exit;
     }
 
     public function jvDownload(Request $request)
@@ -255,5 +256,6 @@ class RptAccNameJVController extends Controller
             // Filename and Output
         $filename = "jv_all_report_{$all_payments_by_party[0]['ac_name']}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'D');
+        exit;
     }
 }

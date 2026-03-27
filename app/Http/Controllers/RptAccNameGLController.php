@@ -446,6 +446,7 @@ class RptAccNameGLController extends Controller
         // Filename and Output
         $filename = "general_ledger_of_{$lager_much_op_bal->first()->ac_name}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'I');
+        exit;
   
     }
 
@@ -688,6 +689,7 @@ class RptAccNameGLController extends Controller
         // Filename and Output
         $filename = "general_ledger_of_{$lager_much_op_bal->first()->ac_name}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'D');
+        exit;
   
     }
 
@@ -956,10 +958,11 @@ class RptAccNameGLController extends Controller
         // Filename and Output
         $filename = "general_ledger_r_of_{$lager_much_op_bal->first()->ac_name}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'I');
+        DB::disconnect();
+        exit;
 
     }
     
-
     public function glrDownload(Request $request){
         // Fetch opening balance records
         $lager_much_op_bal = lager_much_op_bal::where('ac1', $request->acc_id)
@@ -1199,6 +1202,7 @@ class RptAccNameGLController extends Controller
         // Filename and Output
         $filename = "general_ledger_r_of_{$lager_much_op_bal->first()->ac_name}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'D');
+        exit;
   
     }
     
