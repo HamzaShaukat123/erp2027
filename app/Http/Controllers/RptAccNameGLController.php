@@ -963,7 +963,6 @@ class RptAccNameGLController extends Controller
 
     }
     
-
     public function glrDownload(Request $request){
         // Fetch opening balance records
         $lager_much_op_bal = lager_much_op_bal::where('ac1', $request->acc_id)
