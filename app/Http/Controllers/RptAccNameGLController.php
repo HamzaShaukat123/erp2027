@@ -719,147 +719,147 @@ class RptAccNameGLController extends Controller
     }
 
 
-   public function glrPDF(Request $request) {
+    public function glrPDF(Request $request) {
 
-    $lager_much_op_bal = lager_much_op_bal::where('ac1', $request->acc_id)
-    ->join('ac', 'ac.ac_code', '=', 'lager_much_op_bal.ac1')
-    ->where('date', '<', $request->fromDate)
-    ->get();
+        $lager_much_op_bal = lager_much_op_bal::where('ac1', $request->acc_id)
+        ->join('ac', 'ac.ac_code', '=', 'lager_much_op_bal.ac1')
+        ->where('date', '<', $request->fromDate)
+        ->get();
 
-    $lager_much_all = lager_much_all::where('account_cod', $request->acc_id)
-    ->whereBetween('jv_date', [$request->fromDate, $request->toDate])
-    ->orderBy('jv_date', 'asc')
-    ->orderBy('prefix', 'asc')
-    ->orderBy('auto_lager', 'asc')
-    ->get();
+        $lager_much_all = lager_much_all::where('account_cod', $request->acc_id)
+        ->whereBetween('jv_date', [$request->fromDate, $request->toDate])
+        ->orderBy('jv_date', 'asc')
+        ->orderBy('prefix', 'asc')
+        ->orderBy('auto_lager', 'asc')
+        ->get();
 
-    // ✅ SAFE FIRST RECORD
-    $first = $lager_much_op_bal->first();
+        // ✅ SAFE FIRST RECORD
+        $first = $lager_much_op_bal->first();
 
-    $ac_name = $first->ac_name ?? 'N/A';
-    $address = $first->address ?? '';
-    $phone   = $first->phone_no ?? '';
-    $remarks = $first->remarks ?? '';
+        $ac_name = $first->ac_name ?? 'N/A';
+        $address = $first->address ?? '';
+        $phone   = $first->phone_no ?? '';
+        $remarks = $first->remarks ?? '';
 
-    $SOD = 0;
-    $SOC = 0;
+        $SOD = 0;
+        $SOC = 0;
 
-    foreach ($lager_much_op_bal as $record) {
-        $SOD += $record->SumOfDebit ?? 0;
-        $SOC += $record->SumOfrec_cr ?? 0;
-    }
-
-    $opening_bal = $SOD - $SOC;
-    $balance = $opening_bal;
-    $totalDebit = 0;
-    $totalCredit = 0;
-
-    $currentDate = Carbon::now()->format('d-m-y');
-    $formattedFromDate = Carbon::createFromFormat('Y-m-d', $request->fromDate)->format('d-m-y');
-    $formattedToDate = Carbon::createFromFormat('Y-m-d', $request->toDate)->format('d-m-y');
-
-    // ✅ CLEAN BUFFER FIX
-    if (ob_get_length()) {
-        ob_end_clean();
-    }
-
-    $pdf = new MyPDF();
-    $pdf->SetCreator(PDF_CREATOR);
-    $pdf->SetAuthor('MFI');
-    $pdf->SetTitle('General Ledger R-' . htmlspecialchars($ac_name));
-    $pdf->SetSubject("General Ledger R");
-    $pdf->SetKeywords('General Ledger R, TCPDF, PDF');
-    $pdf->setPageOrientation('P');
-    $pdf->AddPage();
-    $pdf->setCellPadding(1.2);
-
-    $heading = '<h1 style="font-size:20px;text-align:center;font-style:italic;text-decoration:underline;color:#17365D">General Ledger R</h1>';
-    $pdf->writeHTML($heading, true, false, true, false, '');
-
-    // ✅ SAFE HTML (no broken tags)
-    $html = '
-    <table border="1" cellpadding="4">
-    <tr>
-        <td width="70%"><b>Account Name:</b> '.htmlspecialchars($ac_name).'</td>
-        <td width="30%"><b>Print Date:</b> '.htmlspecialchars($currentDate).'</td>
-    </tr>
-    <tr>
-        <td width="70%"><b>Address:</b> '.htmlspecialchars($address.' '.$phone).'</td>
-        <td width="30%"><b>From Date:</b> '.htmlspecialchars($formattedFromDate).'</td>
-    </tr>
-    <tr>
-        <td width="70%"><b>Remarks:</b> '.htmlspecialchars($remarks).'</td>
-        <td width="30%"><b>To Date:</b> '.htmlspecialchars($formattedToDate).'</td>
-    </tr>
-    </table><br>';
-
-    $html .= '
-    <table border="1" cellpadding="4">
-    <tr>
-        <th width="13%">R/No</th>
-        <th width="12%">Date</th>
-        <th width="32%">Details</th>
-        <th width="13%">Debit</th>
-        <th width="13%">Credit</th>
-        <th width="17%">Balance</th>
-    </tr>';
-
-    $html .= '
-    <tr>
-        <td></td>
-        <td></td>
-        <td align="center"><b>+----Opening Balance----+</b></td>
-        <td></td>
-        <td></td>
-        <td align="center">'.number_format($opening_bal,0).'</td>
-    </tr>';
-
-    $count = 1;
-
-    foreach ($lager_much_all as $items) {
-
-        if (!empty($items->Debit)) {
-            $balance += $items->Debit;
-            $totalDebit += $items->Debit;
+        foreach ($lager_much_op_bal as $record) {
+            $SOD += $record->SumOfDebit ?? 0;
+            $SOC += $record->SumOfrec_cr ?? 0;
         }
 
-        if (!empty($items->Credit)) {
-            $balance -= $items->Credit;
-            $totalCredit += $items->Credit;
+        $opening_bal = $SOD - $SOC;
+        $balance = $opening_bal;
+        $totalDebit = 0;
+        $totalCredit = 0;
+
+        $currentDate = Carbon::now()->format('d-m-y');
+        $formattedFromDate = Carbon::createFromFormat('Y-m-d', $request->fromDate)->format('d-m-y');
+        $formattedToDate = Carbon::createFromFormat('Y-m-d', $request->toDate)->format('d-m-y');
+
+        // ✅ CLEAN BUFFER FIX
+        if (ob_get_length()) {
+            ob_end_clean();
         }
+
+        $pdf = new MyPDF();
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('MFI');
+        $pdf->SetTitle('General Ledger R-' . htmlspecialchars($ac_name));
+        $pdf->SetSubject("General Ledger R");
+        $pdf->SetKeywords('General Ledger R, TCPDF, PDF');
+        $pdf->setPageOrientation('P');
+        $pdf->AddPage();
+        $pdf->setCellPadding(1.2);
+
+        $heading = '<h1 style="font-size:20px;text-align:center;font-style:italic;text-decoration:underline;color:#17365D">General Ledger R</h1>';
+        $pdf->writeHTML($heading, true, false, true, false, '');
+
+        // ✅ SAFE HTML (no broken tags)
+        $html = '
+        <table border="1" cellpadding="4">
+        <tr>
+            <td width="70%"><b>Account Name:</b> '.htmlspecialchars($ac_name).'</td>
+            <td width="30%"><b>Print Date:</b> '.htmlspecialchars($currentDate).'</td>
+        </tr>
+        <tr>
+            <td width="70%"><b>Address:</b> '.htmlspecialchars($address.' '.$phone).'</td>
+            <td width="30%"><b>From Date:</b> '.htmlspecialchars($formattedFromDate).'</td>
+        </tr>
+        <tr>
+            <td width="70%"><b>Remarks:</b> '.htmlspecialchars($remarks).'</td>
+            <td width="30%"><b>To Date:</b> '.htmlspecialchars($formattedToDate).'</td>
+        </tr>
+        </table><br>';
+
+        $html .= '
+        <table border="1" cellpadding="4">
+        <tr>
+            <th width="13%">R/No</th>
+            <th width="12%">Date</th>
+            <th width="32%">Details</th>
+            <th width="13%">Debit</th>
+            <th width="13%">Credit</th>
+            <th width="17%">Balance</th>
+        </tr>';
+
+        $html .= '
+        <tr>
+            <td></td>
+            <td></td>
+            <td align="center"><b>+----Opening Balance----+</b></td>
+            <td></td>
+            <td></td>
+            <td align="center">'.number_format($opening_bal,0).'</td>
+        </tr>';
+
+        $count = 1;
+
+        foreach ($lager_much_all as $items) {
+
+            if (!empty($items->Debit)) {
+                $balance += $items->Debit;
+                $totalDebit += $items->Debit;
+            }
+
+            if (!empty($items->Credit)) {
+                $balance -= $items->Credit;
+                $totalCredit += $items->Credit;
+            }
+
+            $html .= '<tr>
+                <td>'.$items->prefix.$items->auto_lager.'</td>
+                <td>'.Carbon::parse($items->jv_date)->format('d-m-y').'</td>
+                <td>'.$items->ac2.' '.$items->Narration.'</td>
+                <td>'.number_format($items->Debit ?? 0,0).'</td>
+                <td>'.number_format($items->Credit ?? 0,0).'</td>
+                <td>'.number_format($balance,0).'</td>
+            </tr>';
+
+            $count++;
+        }
+
+        $num_to_words = $pdf->convertCurrencyToWords($balance);
 
         $html .= '<tr>
-            <td>'.$items->prefix.$items->auto_lager.'</td>
-            <td>'.Carbon::parse($items->jv_date)->format('d-m-y').'</td>
-            <td>'.$items->ac2.' '.$items->Narration.'</td>
-            <td>'.number_format($items->Debit ?? 0,0).'</td>
-            <td>'.number_format($items->Credit ?? 0,0).'</td>
+            <td colspan="3" align="center">'.$num_to_words.'</td>
+            <td>'.number_format($totalDebit,0).'</td>
+            <td>'.number_format($totalCredit,0).'</td>
             <td>'.number_format($balance,0).'</td>
         </tr>';
 
-        $count++;
+        $html .= '</table>';
+
+        $pdf->writeHTML($html, true, false, true, false, '');
+
+        $filename = "general_ledger_r_of_{$ac_name}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
+
+        $pdf->Output($filename, 'I');
+
+        DB::disconnect();
+        exit;
     }
-
-    $num_to_words = $pdf->convertCurrencyToWords($balance);
-
-    $html .= '<tr>
-        <td colspan="3" align="center">'.$num_to_words.'</td>
-        <td>'.number_format($totalDebit,0).'</td>
-        <td>'.number_format($totalCredit,0).'</td>
-        <td>'.number_format($balance,0).'</td>
-    </tr>';
-
-    $html .= '</table>';
-
-    $pdf->writeHTML($html, true, false, true, false, '');
-
-    $filename = "general_ledger_r_of_{$ac_name}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
-
-    $pdf->Output($filename, 'I');
-
-    DB::disconnect();
-    exit;
-}
 
     public function glrDownload(Request $request){
         // Fetch opening balance records
