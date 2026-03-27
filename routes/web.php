@@ -403,7 +403,6 @@
         })->name('unauthorized');
 
         Route::post('/keep-alive', function () {
-            session()->regenerate();
             return response()->json(['status' => 'success']);
         })->name('keep-alive');
 
