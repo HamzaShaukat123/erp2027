@@ -144,6 +144,8 @@ class RptAccNameCombSaleController extends Controller
           // Filename and Output
         $filename = "combine_sale_report_{$both_sale_rpt_by_account[0]['ac_name']}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'I');
+        exit;
+
     }
   
 
@@ -252,5 +254,6 @@ class RptAccNameCombSaleController extends Controller
           // Filename and Output
         $filename = "combine_sale_report_{$both_sale_rpt_by_account[0]['ac_name']}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'D');
+        exit;
     }
 }

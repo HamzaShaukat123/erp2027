@@ -613,6 +613,7 @@ public function edit($id)
         
         // Close and output PDF
         $pdf->Output('Purchase Order_'.$purchase['prefix'].$purchase['Sale_inv_no'].'.pdf', 'I');
+        exit;
     }
     
 
@@ -869,6 +870,7 @@ public function edit($id)
         
         // Close and output PDF
         $pdf->Output('Purchase Order_'.$purchase['prefix'].$purchase['Sale_inv_no'].'.pdf', 'I');
+        exit;
     }
     
     public function onlyPriceQtyPDF($id)
@@ -1124,6 +1126,7 @@ $html .= '</tr>';
         
         // Close and output PDF
         $pdf->Output('Purchase Order_'.$purchase['prefix'].$purchase['Sale_inv_no'].'.pdf', 'I');
+        exit;
     }
 
 
@@ -1332,6 +1335,7 @@ $html .= '</tr>';
         
         // Close and output PDF
         $pdf->Output('Purchase Order_'.$purchase['prefix'].$purchase['Sale_inv_no'].'.pdf', 'I');
+        exit;
     }
     
     

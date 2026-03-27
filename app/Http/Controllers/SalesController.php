@@ -574,6 +574,7 @@ class SalesController extends Controller
         
         // Close and output PDF
         $pdf->Output('Sale Invoice_'.$sales['prefix'].$sales['Sal_inv_no'].'.pdf', 'I');
+        exit;
     }
 
 

@@ -464,6 +464,7 @@ class TStockInController extends Controller
         
         // Close and output PDF
         $pdf->Output('TStock In_'.$tstock_in['prefix'].$tstock_in['Sal_inv_no'].'.pdf', 'I');
+        exit;
     }
 }
 

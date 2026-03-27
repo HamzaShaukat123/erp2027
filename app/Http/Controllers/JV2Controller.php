@@ -803,6 +803,7 @@ class JV2Controller extends Controller
         $pdf->SetXY(100, $currentY+5);
         $pdf->Cell(50, 0, "Received By", $style, 1, 'C');
         $pdf->Output('jv2_'.$jv2['jv_no'].'.pdf', 'I');
+        exit;
     }
 
     public function getAttachements(Request $request)

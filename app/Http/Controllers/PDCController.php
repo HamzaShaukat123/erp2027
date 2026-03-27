@@ -407,6 +407,7 @@ class PDCController extends Controller
         // Filename and Output
         $filename = "pdc_report.pdf";
         $pdf->Output($filename, 'I');
+        exit;
 
     }
     

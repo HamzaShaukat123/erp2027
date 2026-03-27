@@ -142,6 +142,7 @@ class RptAccNameSale1Controller extends Controller
         // Filename and Output
         $filename = "sale1_report_{$sale_by_account[0]['ac_name']}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'I');
+        exit;
     }
 
 
@@ -248,5 +249,6 @@ class RptAccNameSale1Controller extends Controller
         // Filename and Output
         $filename = "sale1_report_{$sale_by_account[0]['ac_name']}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'D');
+        exit;
     }
 }

@@ -403,5 +403,6 @@ class StockOutController extends Controller
         
         // Close and output PDF
         $pdf->Output('Stock Out_'.$stock_out['prefix'].$stock_out['Sal_inv_no'].'.pdf', 'I');
+        exit;
     }
 }

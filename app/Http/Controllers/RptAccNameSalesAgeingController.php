@@ -209,6 +209,7 @@ class RptAccNameSalesAgeingController extends Controller
             // Filename and Output
         $filename = "Sales_Ageing_report_{$sales_days[0]['ac_nam']}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'I');
+        exit;
     }
 
     public function salesAgeingDownload(Request $request)
@@ -315,6 +316,8 @@ class RptAccNameSalesAgeingController extends Controller
             // Filename and Output
         $filename = "Sales_Ageing_report_{$sales_days[0]['ac_nam']}_from_{$formattedFromDate}_to_{$formattedToDate}.pdf";
         $pdf->Output($filename, 'D');
+        exit;
+
     }
 
 

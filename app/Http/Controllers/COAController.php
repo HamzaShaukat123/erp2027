@@ -376,6 +376,7 @@ class COAController extends Controller
             }
         }
         $pdf->Output('COA Report.pdf', 'I');
+        exit;
         
     }
 
