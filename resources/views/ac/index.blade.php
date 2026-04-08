@@ -268,10 +268,10 @@
                             </div>
                             <div class="col-lg-6 mb-2">
                                 <label>Area </label>
-                                <select data-plugin-selecttwo class="form-control select2-js"  name="area">
+                                <select class="form-control" data-plugin-select2 name="area">
                                     <option value="">Select Area</option>
-                                    @foreach($ac_area as $key => $row)	
-                                        <option value="{{$row->id}}">{{$row->area}}</option>
+                                    @foreach($ac_area as $row)
+                                        <option value="{{ $row->id }}">{{ $row->area }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -490,6 +490,12 @@
             });
         });
 
+        // Global Select2 settings
+        $.fn.select2.defaults.set("dropdownAutoWidth", true);
+        $.fn.select2.defaults.set("width", "100%");
+
+        // Initialize select2
+        $('[data-plugin-select2]').select2();
     });
 
     function setId(id){
@@ -598,11 +604,17 @@
         });
     }
 
-    $(document).on('click', '.modal-with-form', function () {
-        setTimeout(function () {
-            $('[data-plugin-select2]').select2({
+    $(document).on('mfpOpen', function() {
+
+        $('[data-plugin-select2]').each(function () {
+            var $this = $(this);
+
+            $this.select2({
+                dropdownParent: $this.closest('.modal-block'),
                 width: '100%'
             });
-        }, 200);
+
+        });
+
     });
 </script>
