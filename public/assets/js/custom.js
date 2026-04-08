@@ -354,3 +354,29 @@ document.getElementById('changePasswordForm').addEventListener('submit', functio
     // Return false to prevent form submission by default
     return false;
 });
+
+/* ===========================
+   LOGOUT ON BROWSER/TAB CLOSE
+   (Skips internal navigation & refresh)
+=========================== */
+let isInternalNavigation = false;
+
+document.addEventListener('click', function (e) {
+    if (e.target.closest('a[href]') || e.target.closest('button[type="submit"]') || e.target.closest('input[type="submit"]')) {
+        isInternalNavigation = true;
+    }
+});
+
+document.addEventListener('submit', function () {
+    isInternalNavigation = true;
+});
+
+window.addEventListener('beforeunload', function () {
+    if (!isInternalNavigation) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        const formData = new FormData();
+        formData.append('_token', csrfToken);
+        formData.append('user_id', '{{ session("user_id") }}'); // Pass user_id explicitly
+        navigator.sendBeacon('/logout-browser', formData);
+    }
+});
