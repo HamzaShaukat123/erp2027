@@ -375,12 +375,12 @@
                                 <label>Remarks</label>
                                 <input type="text" class="form-control"  placeholder="Remarks" name="remarks" id="update_remarks">
                             </div>
-                            <div class="col-lg-6 mb-2">
+                            <div class="form-group">
                                 <label>Area</label>
-                                <select data-plugin-selecttwo class="form-control select2-js"  name="area" id="update_area">
+                                <select data-plugin-select2 class="form-control populate" name="area">
                                     <option value="">Select Area</option>
-                                    @foreach($ac_area as $key => $row)	
-                                        <option value="{{$row->id}}">{{$row->area}}</option>
+                                    @foreach($ac_area as $row)
+                                        <option value="{{ $row->id }}">{{ $row->area }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -597,10 +597,4 @@
             alert(error.message);
         });
     }
-
-    $('#addModal').on('shown.bs.modal', function () {
-        $('.select2-js').select2({
-            dropdownParent: $('#addModal')
-        });
-    });
 </script>
