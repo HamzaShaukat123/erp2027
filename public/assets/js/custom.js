@@ -377,9 +377,10 @@ window.addEventListener('beforeunload', function () {
 
     if (!isInternal && !isRefresh) {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        const userId = document.querySelector('meta[name="auth-user-id"]')?.content;
         const formData = new FormData();
         formData.append('_token', csrfToken);
-        formData.append('user_id', '{{ session("user_id") }}');
+        formData.append('user_id', userId);
         navigator.sendBeacon('/logout-browser', formData);
     }
 });
