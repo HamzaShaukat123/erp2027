@@ -490,10 +490,6 @@
             });
         });
 
-        // Global Select2 settings
-        $.fn.select2.defaults.set("dropdownAutoWidth", true);
-        $.fn.select2.defaults.set("width", "100%");
-
         // Initialize select2
         $('[data-plugin-selecttwo]').select2();
     });
@@ -604,17 +600,17 @@
         });
     }
 
-    // $(document).on('mfpOpen', function() {
+    $(document).on('mfpOpen', function() {
 
-    //     $('[data-plugin-selecttwo]').each(function () {
-    //         var $this = $(this);
+        $('[data-plugin-selecttwo]').each(function () {
+            var $this = $(this);
 
-    //         $this.select2({
-    //             dropdownParent: $this.closest('.modal-block'),
-    //             width: '100%'
-    //         });
+            $this.select2({
+                dropdownParent: $this.closest('.modal-block'),
+                width: '100%'
+            });
 
-    //     });
+        });
 
-    // });
+    });
 </script>
