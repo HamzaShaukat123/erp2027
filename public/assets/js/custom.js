@@ -354,19 +354,3 @@ document.getElementById('changePasswordForm').addEventListener('submit', functio
     // Return false to prevent form submission by default
     return false;
 });
-
-// Fix Select2 on mobile - prevent page scroll when scrolling dropdown
-$(document).on('select2:open', function() {
-    // Auto-focus search field on mobile
-    if (window.innerWidth <= 768) {
-        setTimeout(function() {
-            document.querySelector('.select2-search__field') && 
-            document.querySelector('.select2-search__field').focus();
-        }, 100);
-    }
-});
-
-// Fix Select2 closing immediately on mobile (touch issue)
-$(document).on('touchstart', '.select2-results__option', function(e) {
-    e.stopPropagation();
-});

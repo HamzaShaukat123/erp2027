@@ -268,7 +268,7 @@
                             </div>
                             <div class="col-lg-6 mb-2">
                                 <label>Area </label>
-                                <select data-plugin-selecttwo class="form-control select2-js"  name ="area">
+                                <select data-plugin-selecttwo class="form-control select2-js"  name="area">
                                     <option value="">Select Area</option>
                                     @foreach($ac_area as $key => $row)	
                                         <option value="{{$row->id}}">{{$row->area}}</option>
@@ -598,4 +598,9 @@
         });
     }
 
+    $('#addModal').on('shown.bs.modal', function () {
+        $('.select2-js').select2({
+            dropdownParent: $('#addModal')
+        });
+    });
 </script>
