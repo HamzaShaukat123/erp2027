@@ -358,16 +358,24 @@ document.getElementById('changePasswordForm').addEventListener('submit', functio
 /* ===========================
    LOGOUT ON BROWSER/TAB CLOSE
 =========================== */
+document.addEventListener('click', function (e) {
+    if (e.target.closest('a[href]') || e.target.closest('button[type="submit"]') || e.target.closest('input[type="submit"]')) {
+        sessionStorage.setItem('isInternalNavigation', 'true');
+    }
+});
+
+document.addEventListener('submit', function () {
+    sessionStorage.setItem('isInternalNavigation', 'true');
+});
+
 window.addEventListener('beforeunload', function () {
-    // Check if this is a refresh using performance API
-    const navEntry = performance.getEntriesByType('navigation')[0];
-    const isRefresh = navEntry && navEntry.type === 'reload';
+    const isInternal = sessionStorage.getItem('isInternalNavigation') === 'true';
+    const isRefresh = sessionStorage.getItem('pageUnloading') === 'true';
 
-    // Check if internal navigation was triggered
-    const lastInternal = sessionStorage.getItem('isInternalNavigation');
-    const isInternal = lastInternal && (Date.now() - parseInt(lastInternal)) < 2000;
+    sessionStorage.removeItem('isInternalNavigation');
+    sessionStorage.setItem('pageUnloading', 'true');
 
-    if (!isRefresh && !isInternal) {
+    if (!isInternal && !isRefresh) {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
         const formData = new FormData();
         formData.append('_token', csrfToken);
@@ -376,16 +384,6 @@ window.addEventListener('beforeunload', function () {
     }
 });
 
-document.addEventListener('click', function (e) {
-    if (e.target.closest('a[href]') || e.target.closest('button[type="submit"]') || e.target.closest('input[type="submit"]')) {
-        sessionStorage.setItem('isInternalNavigation', Date.now());
-    }
-});
-
-document.addEventListener('submit', function () {
-    sessionStorage.setItem('isInternalNavigation', Date.now());
-});
-
 window.addEventListener('load', function () {
-    sessionStorage.removeItem('isInternalNavigation');
+    sessionStorage.removeItem('pageUnloading');
 });
