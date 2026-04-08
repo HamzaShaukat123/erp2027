@@ -604,17 +604,17 @@
         });
     }
 
-    $(document).on('mfpOpen', function() {
+    // $(document).on('mfpOpen', function() {
 
-        $('[data-plugin-selecttwo]').each(function () {
-            var $this = $(this);
+    //     $('[data-plugin-selecttwo]').each(function () {
+    //         var $this = $(this);
 
-            $this.select2({
-                dropdownParent: $this.closest('.modal-block'),
-                width: '100%'
-            });
+    //         $this.select2({
+    //             dropdownParent: $this.closest('.modal-block'),
+    //             width: '100%'
+    //         });
 
-        });
+    //     });
 
-    });
+    // });
 </script>
