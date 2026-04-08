@@ -376,7 +376,7 @@ window.addEventListener('beforeunload', function () {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
         const formData = new FormData();
         formData.append('_token', csrfToken);
-        formData.append('user_id', '{{ session("user_id") }}'); // Pass user_id explicitly
+        formData.append('user_id', '{{ session("user_id") }}');
         navigator.sendBeacon('/logout-browser', formData);
     }
 });

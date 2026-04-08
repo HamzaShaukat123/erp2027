@@ -403,17 +403,26 @@ class UsersController extends Controller
 
     public function logoutBrowser(Request $request)
     {
+        \Log::info('logoutBrowser called', [
+            'session_user_id' => session('user_id'),
+            'request_user_id' => $request->input('user_id'),
+            'all_input'       => $request->all(),
+        ]);
+
         $userId = session('user_id') ?? $request->input('user_id');
 
         if ($userId) {
             users::where('id', $userId)->update(['is_login' => 0]);
+            \Log::info('is_login set to 0 for user: ' . $userId);
+        } else {
+            \Log::warning('logoutBrowser: no user_id found');
         }
 
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return response()->json(['success' => true]); // Better than redirect for beacon
+        return response()->json(['success' => true]);
     }
 
     public function assignRole(Request $request, User $user)
