@@ -244,7 +244,7 @@
                         <div class="row form-group">
                             <div class="col-lg-6">
                                 <label>Account Code</label>
-                                <input type="number" class="form-control" placeholder="Account Code" name="ac_cod" required>
+                                <input type="number" class="form-control" placeholder="Account Code" name="ac_cod" required disabled>
                             </div>
                             <div class="col-lg-6 mb-2">
                                 <label>Account Name<span style="color: red;"><strong>*</strong></span></label>
