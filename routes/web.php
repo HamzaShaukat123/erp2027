@@ -343,7 +343,7 @@
         Route::get('/backup-database', [App\Http\Controllers\DatabaseBackupController::class, 'backupDatabase'])->name('backup.database');
         Route::get('/backup-files', [App\Http\Controllers\DatabaseBackupController::class, 'downloadZip'])->name('backup.files');
         Route::post('/logout', [App\Http\Controllers\UsersController::class, 'logout'])->name('logout');
-        Route::post('/logout-browser', [UsersController::class, 'logoutBrowser']);
+        Route::post('/logout-browser', [App\Http\Controllers\UsersController::class, 'logoutBrowser']);
         Route::get('/validate-user-password', [App\Http\Controllers\UsersController::class, 'getUserPassword'])->name('validate-user-password');
         Route::post('/change-user-password', [App\Http\Controllers\UsersController::class, 'updateUserPassowrd'])->name('change-user-password');
         Route::get('/item-groups/detail', [App\Http\Controllers\ItemGroupsController::class, 'getGroupDetails'])->name('get-item-group-details');
