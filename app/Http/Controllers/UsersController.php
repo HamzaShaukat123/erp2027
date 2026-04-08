@@ -405,12 +405,24 @@ class UsersController extends Controller
     {
         $userId = $request->input('user_id');
 
+        \Log::info('logoutBrowser called', [
+            'request_user_id' => $userId,
+            'session_user_id' => session('user_id'),
+            'match'           => $userId == session('user_id') ? 'YES' : 'NO',
+        ]);
+
         // Safety check — only logout the user who owns this session
         if ($userId && $userId == session('user_id')) {
             users::where('id', $userId)->update(['is_login' => 0]);
+            \Log::info('is_login set to 0 for user: ' . $userId);
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
+        } else {
+            \Log::warning('logoutBrowser skipped — user_id mismatch or missing', [
+                'request_user_id' => $userId,
+                'session_user_id' => session('user_id'),
+            ]);
         }
 
         return response()->json(['success' => true]);
