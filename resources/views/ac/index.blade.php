@@ -600,17 +600,17 @@
         });
     }
 
-    $(document).on('mfpOpen', function() {
+    $(document).on('mfpOpen', function () {
 
-        $('[data-plugin-selecttwo]').each(function () {
-            var $this = $(this);
+        // Global settings
+        $.fn.select2.defaults.set("dropdownAutoWidth", true);
+        $.fn.select2.defaults.set("width", "100%");
 
-            $this.select2({
-                dropdownParent: $this.closest('.modal-block'),
-                width: '100%'
+        // Reinitialize select2 inside modal
+        $('.modal-block').find('select[data-plugin-selecttwo]').each(function () {
+            $(this).select2({
+                dropdownParent: $(this).closest('.modal-block')
             });
-
         });
-
     });
 </script>
