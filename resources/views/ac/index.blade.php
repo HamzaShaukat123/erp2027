@@ -597,4 +597,12 @@
             alert(error.message);
         });
     }
+
+    $(document).on('click', '.modal-with-form', function () {
+        setTimeout(function () {
+            $('[data-plugin-select2]').select2({
+                width: '100%'
+            });
+        }, 200);
+    });
 </script>
