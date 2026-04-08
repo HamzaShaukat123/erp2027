@@ -268,10 +268,10 @@
                             </div>
                             <div class="col-lg-6 mb-2">
                                 <label>Area </label>
-                                <select class="form-control" data-plugin-selecttwo name="area">
+                                <select data-plugin-selecttwo class="form-control select2-js"  name ="area">
                                     <option value="">Select Area</option>
-                                    @foreach($ac_area as $row)
-                                        <option value="{{ $row->id }}">{{ $row->area }}</option>
+                                    @foreach($ac_area as $key => $row)	
+                                        <option value="{{$row->id}}">{{$row->area}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -375,12 +375,12 @@
                                 <label>Remarks</label>
                                 <input type="text" class="form-control"  placeholder="Remarks" name="remarks" id="update_remarks">
                             </div>
-                            <div class="form-group">
+                            <div class="col-lg-6 mb-2">
                                 <label>Area</label>
-                                <select data-plugin-select2 class="form-control populate" name="area">
+                                <select data-plugin-selecttwo class="form-control select2-js"  name="area" id="update_area">
                                     <option value="">Select Area</option>
-                                    @foreach($ac_area as $row)
-                                        <option value="{{ $row->id }}">{{ $row->area }}</option>
+                                    @foreach($ac_area as $key => $row)	
+                                        <option value="{{$row->id}}">{{$row->area}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -490,8 +490,6 @@
             });
         });
 
-        // Initialize select2
-        $('[data-plugin-selecttwo]').select2();
     });
 
     function setId(id){
@@ -600,17 +598,4 @@
         });
     }
 
-    $(document).on('mfpOpen', function () {
-
-        // Global settings
-        $.fn.select2.defaults.set("dropdownAutoWidth", true);
-        $.fn.select2.defaults.set("width", "100%");
-
-        // Reinitialize select2 inside modal
-        $('.modal-block').find('select[data-plugin-selecttwo]').each(function () {
-            $(this).select2({
-                dropdownParent: $(this).closest('.modal-block')
-            });
-        });
-    });
 </script>
