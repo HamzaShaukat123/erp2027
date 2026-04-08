@@ -268,7 +268,7 @@
                             </div>
                             <div class="col-lg-6 mb-2">
                                 <label>Area </label>
-                                <select class="form-control" data-plugin-select2 name="area">
+                                <select class="form-control" data-plugin-selecttwo name="area">
                                     <option value="">Select Area</option>
                                     @foreach($ac_area as $row)
                                         <option value="{{ $row->id }}">{{ $row->area }}</option>
@@ -495,7 +495,7 @@
         $.fn.select2.defaults.set("width", "100%");
 
         // Initialize select2
-        $('[data-plugin-select2]').select2();
+        $('[data-plugin-selecttwo]').select2();
     });
 
     function setId(id){
@@ -606,7 +606,7 @@
 
     $(document).on('mfpOpen', function() {
 
-        $('[data-plugin-select2]').each(function () {
+        $('[data-plugin-selecttwo]').each(function () {
             var $this = $(this);
 
             $this.select2({
