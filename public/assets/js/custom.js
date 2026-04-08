@@ -359,24 +359,31 @@ document.getElementById('changePasswordForm').addEventListener('submit', functio
    LOGOUT ON BROWSER/TAB CLOSE
    (Skips internal navigation & refresh)
 =========================== */
-let isInternalNavigation = false;
+
+// On page load, reset the flag
+sessionStorage.removeItem('isInternalNavigation');
 
 document.addEventListener('click', function (e) {
     if (e.target.closest('a[href]') || e.target.closest('button[type="submit"]') || e.target.closest('input[type="submit"]')) {
-        isInternalNavigation = true;
+        sessionStorage.setItem('isInternalNavigation', 'true');
     }
 });
 
 document.addEventListener('submit', function () {
-    isInternalNavigation = true;
+    sessionStorage.setItem('isInternalNavigation', 'true');
 });
 
 window.addEventListener('beforeunload', function () {
-    if (!isInternalNavigation) {
+    const isInternal = sessionStorage.getItem('isInternalNavigation') === 'true';
+
+    if (!isInternal) {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
         const formData = new FormData();
         formData.append('_token', csrfToken);
         formData.append('user_id', '{{ session("user_id") }}');
         navigator.sendBeacon('/logout-browser', formData);
     }
+
+    // Always clear after beforeunload so next page starts fresh
+    sessionStorage.removeItem('isInternalNavigation');
 });
