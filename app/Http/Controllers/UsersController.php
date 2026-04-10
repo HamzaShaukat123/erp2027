@@ -401,23 +401,17 @@ class UsersController extends Controller
         return redirect()->route('login');
     }
 
-  public function logoutBrowser(Request $request)
+public function logoutBrowser(Request $request)
 {
     try {
-        if (!$request->has('logout_token')) {
-            return response()->json(['success' => false]);
+        if (auth()->check()) {
+            users::where('id', auth()->id())->update(['is_login' => 0]);
         }
-
-        $userId = decrypt($request->input('logout_token'));
-
-        users::where('id', $userId)->update(['is_login' => 0]);
-
-        \Log::info('Auto logout (tab close)', ['user_id' => $userId]);
 
         return response()->json(['success' => true]);
 
     } catch (\Exception $e) {
-        \Log::error('LogoutBrowser error: ' . $e->getMessage());
+        \Log::error($e->getMessage());
         return response()->json(['success' => false]);
     }
 }
