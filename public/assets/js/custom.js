@@ -375,20 +375,24 @@ document.addEventListener('submit', function () {
     isInternalNavigation = true;
 });
 
-// Detect tab close / leave
-document.addEventListener('visibilitychange', function () {
-    if (document.visibilityState === 'hidden') {
-        if (!isInternalNavigation) {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-            const logoutToken = document.querySelector('meta[name="logout-token"]')?.content;
+// Detect tab close / refresh
+window.addEventListener('beforeunload', function (e) {
+    if (!isInternalNavigation) {
 
-            if (logoutToken) {
-                const data = new FormData();
-                data.append('_token', csrfToken);
-                data.append('logout_token', logoutToken);
+        // Ignore reload
+        if (performance.getEntriesByType("navigation")[0]?.type === "reload") {
+            return;
+        }
 
-                navigator.sendBeacon('/logout-browser', data);
-            }
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        const logoutToken = document.querySelector('meta[name="logout-token"]')?.content;
+
+        if (logoutToken) {
+            const data = new FormData();
+            data.append('_token', csrfToken);
+            data.append('logout_token', logoutToken);
+
+            navigator.sendBeacon('/logout-browser', data);
         }
     }
 });

@@ -405,7 +405,12 @@ public function logoutBrowser(Request $request)
 {
     try {
         if (auth()->check()) {
-            users::where('id', auth()->id())->update(['is_login' => 0]);
+
+            // Optional: validate logout_token if stored in DB/session
+
+            users::where('id', auth()->id())->update([
+                'is_login' => 0
+            ]);
         }
 
         return response()->json(['success' => true]);
