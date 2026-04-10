@@ -358,41 +358,36 @@ document.getElementById('changePasswordForm').addEventListener('submit', functio
 /* ===========================
    LOGOUT ON BROWSER/TAB CLOSE
 =========================== */
-let isInternalNavigation = false;
-
-// Detect internal navigation
 document.addEventListener('click', function (e) {
-    if (
-        e.target.closest('a[href]') ||
-        e.target.closest('button[type="submit"]') ||
-        e.target.closest('input[type="submit"]')
-    ) {
-        isInternalNavigation = true;
+    if (e.target.closest('a[href]') || e.target.closest('button[type="submit"]') || e.target.closest('input[type="submit"]')) {
+        sessionStorage.setItem('isInternalNavigation', 'true');
     }
 });
 
 document.addEventListener('submit', function () {
-    isInternalNavigation = true;
+    sessionStorage.setItem('isInternalNavigation', 'true');
 });
 
-// Detect tab close / refresh
-window.addEventListener('beforeunload', function (e) {
-    if (!isInternalNavigation) {
+window.addEventListener('beforeunload', function () {
+    const isInternal = sessionStorage.getItem('isInternalNavigation') === 'true';
+    const isRefresh = sessionStorage.getItem('pageUnloading') === 'true';
 
-        // Ignore reload
-        if (performance.getEntriesByType("navigation")[0]?.type === "reload") {
-            return;
-        }
+    sessionStorage.removeItem('isInternalNavigation');
+    sessionStorage.setItem('pageUnloading', 'true');
 
+    if (!isInternal && !isRefresh) {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
         const logoutToken = document.querySelector('meta[name="logout-token"]')?.content;
 
         if (logoutToken) {
-            const data = new FormData();
-            data.append('_token', csrfToken);
-            data.append('logout_token', logoutToken);
-
-            navigator.sendBeacon('/logout-browser', data);
+            const formData = new FormData();
+            formData.append('_token', csrfToken);
+            formData.append('logout_token', logoutToken);
+            navigator.sendBeacon('/logout-browser', formData);
         }
     }
+});
+
+window.addEventListener('load', function () {
+    sessionStorage.removeItem('pageUnloading');
 });

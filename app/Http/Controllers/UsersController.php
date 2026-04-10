@@ -401,25 +401,22 @@ class UsersController extends Controller
         return redirect()->route('login');
     }
 
-public function logoutBrowser(Request $request)
-{
-    try {
-        if (auth()->check()) {
-
-            // Optional: validate logout_token if stored in DB/session
-
-            users::where('id', auth()->id())->update([
-                'is_login' => 0
-            ]);
+    public function logoutBrowser(Request $request)
+    {
+        try {
+            $userId = decrypt($request->input('logout_token'));
+        } catch (\Exception $e) {
+            return response()->json(['success' => false]);
         }
 
-        return response()->json(['success' => true]);
+        \Log::info('logoutBrowser called', ['user_id' => $userId]);
 
-    } catch (\Exception $e) {
-        \Log::error($e->getMessage());
-        return response()->json(['success' => false]);
+        users::where('id', $userId)->update(['is_login' => 0]);
+
+        \Log::info('is_login set to 0 for user: ' . $userId);
+
+        return response()->json(['success' => true]);
     }
-}
 
     public function assignRole(Request $request, User $user)
     {
