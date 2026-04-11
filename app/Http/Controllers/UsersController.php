@@ -401,22 +401,38 @@ class UsersController extends Controller
         return redirect()->route('login');
     }
 
+    // public function logoutBrowser(Request $request)
+    // {
+    //     try {
+    //         $userId = decrypt($request->input('logout_token'));
+    //     } catch (\Exception $e) {
+    //         return response()->json(['success' => false]);
+    //     }
+
+    //     \Log::info('logoutBrowser called', ['user_id' => $userId]);
+
+    //     users::where('id', $userId)->update(['is_login' => 0]);
+
+    //     \Log::info('is_login set to 0 for user: ' . $userId);
+
+    //     return response()->json(['success' => true]);
+    // }
+
+
     public function logoutBrowser(Request $request)
-    {
-        try {
-            $userId = decrypt($request->input('logout_token'));
-        } catch (\Exception $e) {
-            return response()->json(['success' => false]);
-        }
-
-        \Log::info('logoutBrowser called', ['user_id' => $userId]);
-
-        users::where('id', $userId)->update(['is_login' => 0]);
-
-        \Log::info('is_login set to 0 for user: ' . $userId);
-
-        return response()->json(['success' => true]);
+{
+    if (!Auth::check()) {
+        return response()->json(['success' => false]);
     }
+
+    $userId = Auth::id();
+
+    users::where('id', $userId)->update([
+        'is_login' => 0
+    ]);
+
+    return response()->json(['success' => true]);
+}
 
     public function assignRole(Request $request, User $user)
     {
