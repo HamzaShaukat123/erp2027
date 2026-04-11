@@ -358,8 +358,48 @@ document.getElementById('changePasswordForm').addEventListener('submit', functio
 /* ===========================
    LOGOUT ON BROWSER/TAB CLOSE
 =========================== */
+// document.addEventListener('click', function (e) {
+//     if (e.target.closest('a[href]') || e.target.closest('button[type="submit"]') || e.target.closest('input[type="submit"]')) {
+//         sessionStorage.setItem('isInternalNavigation', 'true');
+//     }
+// });
+
+// document.addEventListener('submit', function () {
+//     sessionStorage.setItem('isInternalNavigation', 'true');
+// });
+
+// window.addEventListener('beforeunload', function () {
+//     const isInternal = sessionStorage.getItem('isInternalNavigation') === 'true';
+//     const isRefresh = sessionStorage.getItem('pageUnloading') === 'true';
+
+//     sessionStorage.removeItem('isInternalNavigation');
+//     sessionStorage.setItem('pageUnloading', 'true');
+
+//     if (!isInternal && !isRefresh) {
+//         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+//         const logoutToken = document.querySelector('meta[name="logout-token"]')?.content;
+
+//         if (logoutToken) {
+//             const formData = new FormData();
+//             formData.append('_token', csrfToken);
+//             formData.append('logout_token', logoutToken);
+//             navigator.sendBeacon('/logout-browser', formData);
+//         }
+//     }
+// });
+
+// window.addEventListener('load', function () {
+//     sessionStorage.removeItem('pageUnloading');
+// });
+
+
+
 document.addEventListener('click', function (e) {
-    if (e.target.closest('a[href]') || e.target.closest('button[type="submit"]') || e.target.closest('input[type="submit"]')) {
+    if (
+        e.target.closest('a[href]') ||
+        e.target.closest('button[type="submit"]') ||
+        e.target.closest('input[type="submit"]')
+    ) {
         sessionStorage.setItem('isInternalNavigation', 'true');
     }
 });
@@ -370,12 +410,12 @@ document.addEventListener('submit', function () {
 
 window.addEventListener('beforeunload', function () {
     const isInternal = sessionStorage.getItem('isInternalNavigation') === 'true';
-    const isRefresh = sessionStorage.getItem('pageUnloading') === 'true';
 
-    sessionStorage.removeItem('isInternalNavigation');
-    sessionStorage.setItem('pageUnloading', 'true');
+    // Detect reload
+    const navEntries = performance.getEntriesByType("navigation");
+    const isReload = navEntries.length && navEntries[0].type === "reload";
 
-    if (!isInternal && !isRefresh) {
+    if (!isInternal && !isReload) {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
         const logoutToken = document.querySelector('meta[name="logout-token"]')?.content;
 
@@ -383,11 +423,10 @@ window.addEventListener('beforeunload', function () {
             const formData = new FormData();
             formData.append('_token', csrfToken);
             formData.append('logout_token', logoutToken);
+
             navigator.sendBeacon('/logout-browser', formData);
         }
     }
-});
 
-window.addEventListener('load', function () {
-    sessionStorage.removeItem('pageUnloading');
+    sessionStorage.removeItem('isInternalNavigation');
 });
