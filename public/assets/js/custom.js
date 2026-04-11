@@ -394,39 +394,33 @@ document.getElementById('changePasswordForm').addEventListener('submit', functio
 
 
 
-document.addEventListener('click', function (e) {
-    if (
-        e.target.closest('a[href]') ||
-        e.target.closest('button[type="submit"]') ||
-        e.target.closest('input[type="submit"]')
-    ) {
-        sessionStorage.setItem('isInternalNavigation', 'true');
-    }
-});
+document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "hidden") {
 
-document.addEventListener('submit', function () {
-    sessionStorage.setItem('isInternalNavigation', 'true');
-});
-
-window.addEventListener('beforeunload', function () {
-    const isInternal = sessionStorage.getItem('isInternalNavigation') === 'true';
-
-    // Detect reload
-    const navEntries = performance.getEntriesByType("navigation");
-    const isReload = navEntries.length && navEntries[0].type === "reload";
-
-    if (!isInternal && !isReload) {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
         const logoutToken = document.querySelector('meta[name="logout-token"]')?.content;
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-        if (logoutToken) {
-            const formData = new FormData();
-            formData.append('_token', csrfToken);
-            formData.append('logout_token', logoutToken);
+        if (!logoutToken) return;
 
-            navigator.sendBeacon('/logout-browser', formData);
-        }
+        const data = new FormData();
+        data.append('_token', csrfToken);
+        data.append('logout_token', logoutToken);
+
+        navigator.sendBeacon('/logout-browser', data);
     }
+});
 
-    sessionStorage.removeItem('isInternalNavigation');
+// Backup
+window.addEventListener('beforeunload', function () {
+
+    const logoutToken = document.querySelector('meta[name="logout-token"]')?.content;
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+    if (!logoutToken) return;
+
+    const data = new FormData();
+    data.append('_token', csrfToken);
+    data.append('logout_token', logoutToken);
+
+    navigator.sendBeacon('/logout-browser', data);
 });

@@ -419,20 +419,40 @@ class UsersController extends Controller
     // }
 
 
-    public function logoutBrowser(Request $request)
+public function logoutBrowser(Request $request)
 {
-    if (!Auth::check()) {
+    \Log::info('logoutBrowser HIT');
+
+    try {
+        $token = $request->logout_token;
+
+        if (!$token) {
+            \Log::warning('No token received');
+            return response()->json(['success' => false]);
+        }
+
+        $userId = decrypt($token);
+
+        if (!is_numeric($userId)) {
+            \Log::error('Invalid user ID');
+            return response()->json(['success' => false]);
+        }
+
+    } catch (\Exception $e) {
+        \Log::error('Decrypt error: ' . $e->getMessage());
         return response()->json(['success' => false]);
     }
 
-    $userId = Auth::id();
-
-    users::where('id', $userId)->update([
+    $updated = users::where('id', $userId)->limit(1)->update([
         'is_login' => 0
     ]);
 
+    \Log::info('User logout update rows: ' . $updated);
+
     return response()->json(['success' => true]);
 }
+
+
 
     public function assignRole(Request $request, User $user)
     {
