@@ -358,69 +358,36 @@ document.getElementById('changePasswordForm').addEventListener('submit', functio
 /* ===========================
    LOGOUT ON BROWSER/TAB CLOSE
 =========================== */
-// document.addEventListener('click', function (e) {
-//     if (e.target.closest('a[href]') || e.target.closest('button[type="submit"]') || e.target.closest('input[type="submit"]')) {
-//         sessionStorage.setItem('isInternalNavigation', 'true');
-//     }
-// });
-
-// document.addEventListener('submit', function () {
-//     sessionStorage.setItem('isInternalNavigation', 'true');
-// });
-
-// window.addEventListener('beforeunload', function () {
-//     const isInternal = sessionStorage.getItem('isInternalNavigation') === 'true';
-//     const isRefresh = sessionStorage.getItem('pageUnloading') === 'true';
-
-//     sessionStorage.removeItem('isInternalNavigation');
-//     sessionStorage.setItem('pageUnloading', 'true');
-
-//     if (!isInternal && !isRefresh) {
-//         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-//         const logoutToken = document.querySelector('meta[name="logout-token"]')?.content;
-
-//         if (logoutToken) {
-//             const formData = new FormData();
-//             formData.append('_token', csrfToken);
-//             formData.append('logout_token', logoutToken);
-//             navigator.sendBeacon('/logout-browser', formData);
-//         }
-//     }
-// });
-
-// window.addEventListener('load', function () {
-//     sessionStorage.removeItem('pageUnloading');
-// });
-
-
-
-document.addEventListener("visibilitychange", function () {
-    if (document.visibilityState === "hidden") {
-
-        const logoutToken = document.querySelector('meta[name="logout-token"]')?.content;
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-
-        if (!logoutToken) return;
-
-        const data = new FormData();
-        data.append('_token', csrfToken);
-        data.append('logout_token', logoutToken);
-
-        navigator.sendBeacon('/logout-browser', data);
+document.addEventListener('click', function (e) {
+    if (e.target.closest('a[href]') || e.target.closest('button[type="submit"]') || e.target.closest('input[type="submit"]')) {
+        sessionStorage.setItem('isInternalNavigation', 'true');
     }
 });
 
-// Backup
+document.addEventListener('submit', function () {
+    sessionStorage.setItem('isInternalNavigation', 'true');
+});
+
 window.addEventListener('beforeunload', function () {
+    const isInternal = sessionStorage.getItem('isInternalNavigation') === 'true';
+    const isRefresh = sessionStorage.getItem('pageUnloading') === 'true';
 
-    const logoutToken = document.querySelector('meta[name="logout-token"]')?.content;
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    sessionStorage.removeItem('isInternalNavigation');
+    sessionStorage.setItem('pageUnloading', 'true');
 
-    if (!logoutToken) return;
+    if (!isInternal && !isRefresh) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        const logoutToken = document.querySelector('meta[name="logout-token"]')?.content;
 
-    const data = new FormData();
-    data.append('_token', csrfToken);
-    data.append('logout_token', logoutToken);
+        if (logoutToken) {
+            const formData = new FormData();
+            formData.append('_token', csrfToken);
+            formData.append('logout_token', logoutToken);
+            navigator.sendBeacon('/logout-browser', formData);
+        }
+    }
+});
 
-    navigator.sendBeacon('/logout-browser', data);
+window.addEventListener('load', function () {
+    sessionStorage.removeItem('pageUnloading');
 });
